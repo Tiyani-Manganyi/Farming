@@ -88,7 +88,7 @@ st.set_page_config(page_title="Farming Website", page_icon="🌾")
 # Create users file if it doesn't exist
 create_users_file()
 
-# Navbar HTML with a green background
+# Navbar HTML with a fixed top position and green background
 nav_html = """
 <style>
     body {
@@ -96,6 +96,10 @@ nav_html = """
     }
     .navbar {
         background-color: green;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
         padding: 1rem;
         display: flex;
         justify-content: space-around;
@@ -105,6 +109,9 @@ nav_html = """
         text-decoration: none;
         font-size: 20px;
         font-weight: bold;
+    }
+    .content {
+        padding-top: 80px; /* Adjust for the height of the navbar */
     }
 </style>
 
@@ -120,6 +127,9 @@ nav_html = """
 
 # Display the navbar
 st.markdown(nav_html, unsafe_allow_html=True)
+
+# Padding for content to avoid being hidden behind the navbar
+st.markdown('<div class="content">', unsafe_allow_html=True)
 
 # User session state to track login status and user info
 if 'logged_in' not in st.session_state:
@@ -266,3 +276,6 @@ We grow a variety of vegetables, using organic methods to keep them fresh and he
 ## Contact Us
 Feel free to reach out to us for any inquiries.
 """)
+
+# End the content padding div
+st.markdown('</div>', unsafe_allow_html=True)
