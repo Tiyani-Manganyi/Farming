@@ -213,5 +213,5 @@ if st.session_state.logged_in:
 else:
     st.title("Welcome to our farming ,livestock and  vegetables")
     st.write("Please log in to interact with our website.")
-    st.image("medical.png", use_column_width=True)
+    st.image("medical.jpg", use_column_width=True)
     st.write("The mission for us in to sell livestock,farming, and vegetables.")
