@@ -83,134 +83,63 @@ def create_users_file():
             writer.writerow(['username', 'password', 'name', 'surname', 'email'])
 
 # Set page configuration
-st.set_page_config(page_title="Medical Assistant", page_icon="medical.png")
+st.set_page_config(page_title="Farming Website", page_icon="🌾")
 
 # Create users file if it doesn't exist
 create_users_file()
 
-# User session state to track login status and user info
-if 'logged_in' not in st.session_state:
-    st.session_state.logged_in = False
-if 'username' not in st.session_state:
-    st.session_state.username = None
-if 'name' not in st.session_state:
-    st.session_state.name = ''
-if 'surname' not in st.session_state:
-    st.session_state.surname = ''
-if 'email' not in st.session_state:
-    st.session_state.email = ''
-if 'chat_history' not in st.session_state:
-    st.session_state.chat_history = []
-if 'bookmarked_messages' not in st.session_state:
-    st.session_state.bookmarked_messages = []
+# Navbar HTML with a green background
+nav_html = """
+<style>
+    body {
+        background-color: #e8f5e9;
+    }
+    .navbar {
+        background-color: green;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-around;
+    }
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: bold;
+    }
+</style>
 
-# Authentication
-if not st.session_state.logged_in:
-    st.sidebar.title("User Authentication")
+<div class="navbar">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#farming">Farming</a>
+    <a href="#livestock">Livestock</a>
+    <a href="#vegetables">Vegetables</a>
+    <a href="#contact">Contact Us</a>
+</div>
+"""
 
-    # Registration
-    with st.sidebar.expander("Register"):
-        reg_username = st.text_input("Username", key="reg_username")
-        reg_password = st.text_input("Password", type="password", key="reg_password")
-        reg_name = st.text_input("Name", key="reg_name")
-        reg_surname = st.text_input("Surname", key="reg_surname")
-        reg_email = st.text_input("Email", key="reg_email")
-        if st.button("Register"):
-            if not user_exists(reg_username):
-                register_user(reg_username, reg_password, reg_name, reg_surname, reg_email)
-                st.success("User registered successfully.")
-            else:
-                st.error("Username already exists.")
+# Display the navbar
+st.markdown(nav_html, unsafe_allow_html=True)
 
-    # Login
-    with st.sidebar.expander("Login"):
-        log_username = st.text_input("Username", key="log_username")
-        log_password = st.text_input("Password", type="password", key="log_password")
-        if st.button("Login"):
-            if login_user(log_username, log_password):
-                st.session_state.logged_in = True
-                st.session_state.username = log_username
-                user_info = get_user_info(log_username)  # Fetch the user's info
-                st.session_state.name = user_info['name'].capitalize()
-                st.session_state.surname = user_info['surname'].capitalize()
-                st.session_state.email = user_info['email']
-                st.success("Logged in successfully.")
-            else:
-                st.error("Invalid username or password.")
+# Main content sections
+st.title("Welcome to Our Farming, Livestock, and Vegetables Website")
 
-# If logged in
-if st.session_state.logged_in:
-    st.sidebar.title(f"Welcome, {st.session_state.name} {st.session_state.surname}")
+st.markdown("""
+## Home
+Explore the best in farming, livestock, and vegetables!
 
-    # Profile Section
-    with st.sidebar.expander("Your Information"):
-        st.write(f"**Name:** {st.session_state.name} {st.session_state.surname}")
-        st.write(f"**Email:** {st.session_state.email}")
+## About
+We are dedicated to providing fresh produce and quality livestock to our customers.
 
-    # Update Profile
-    with st.sidebar.expander("Update Profile"):
-        new_name = st.text_input("New Name", value=st.session_state.name, key="new_name")
-        new_surname = st.text_input("New Surname", value=st.session_state.surname, key="new_surname")
-        new_email = st.text_input("New Email", value=st.session_state.email, key="new_email")
-        new_password = st.text_input("New Password", type="password", key="new_password")
-        if st.button("Update Profile"):
-            update_user_info(st.session_state.username, new_name, new_surname, new_email, new_password)
-            st.session_state.name = new_name
-            st.session_state.surname = new_surname
-            st.session_state.email = new_email
-            st.success("Profile updated successfully.")
+## Farming
+Learn more about our farming practices and how we ensure sustainable and organic produce.
 
-    # Chat Interface
-    st.title("Medical Assistant")
-    for message in st.session_state.chat_history:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+## Livestock
+Our livestock are well taken care of, ensuring the highest quality meat and dairy products.
 
-    # Chat Input
-    if question := st.chat_input(placeholder="Ask a farming  question"):
-        st.session_state.chat_history.append({"role": "user", "content": question})
+## Vegetables
+We grow a variety of vegetables, using organic methods to keep them fresh and healthy.
 
-        # Display user's message
-        with st.chat_message("user"):
-            st.markdown(question)
-
-        # Create chat completion request
-        start = time.process_time()
-        chat_completion = client.chat.completions.create(
-            messages=[{"role": "system", "content": "WELCOME TO OUR SYSTEM"}] + st.session_state.chat_history,
-            model="llama3-8b-8192",
-            temperature=0.5,
-            max_tokens=1024,
-            top_p=1,
-            stop=None,
-            stream=False,
-        )
-        response_time = time.process_time() - start
-
-        answer = chat_completion.choices[0].message.content
-
-        # Display the response only if it meets medical criteria
-        if any(term in answer.lower() for term in ['disease', 'cause', 'drug', 'recommendation']):
-            st.session_state.chat_history.append({"role": "assistant", "content": answer})
-
-            # Display assistant's response
-            with st.chat_message("assistant"):
-                st.markdown(answer)
-        else:
-            st.write("The response does not match the items criteria.")
-
-    # Logout
-    if st.sidebar.button("Logout"):
-        st.session_state.logged_in = False
-        st.session_state.username = None
-        st.session_state.name = ''
-        st.session_state.surname = ''
-        st.session_state.email = ''
-        st.session_state.chat_history = []
-        st.session_state.bookmarked_messages = []
-        st.success("Logged out successfully.")
-
-else:
-    st.title("Welcome to our farming ,livestock and  vegetables")
-    st.write("Please log in to interact with our website.")
-    st.write("The mission for us in to sell livestock,farming, and vegetables.")
+## Contact Us
+Feel free to reach out to us for any inquiries.
+""")
