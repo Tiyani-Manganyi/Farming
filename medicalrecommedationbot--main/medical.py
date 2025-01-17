@@ -124,6 +124,81 @@ nav_html = """
     <a href="#contact">Contact Us</a>
 </div>
 """
+# Streamlit CSS styling for login and sign-up forms
+form_css = """
+<style>
+    .form-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .form-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: green;
+    }
+    .form-container input[type="text"],
+    .form-container input[type="password"],
+    .form-container input[type="email"],
+    .form-container button {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .form-container button {
+        background: green;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    .form-container button:hover {
+        background: darkgreen;
+    }
+</style>
+"""
+
+# Display CSS styling
+st.markdown(form_css, unsafe_allow_html=True)
+
+# Render Login Form
+if not st.session_state.logged_in:
+    st.markdown('<div class="form-container">', unsafe_allow_html=True)
+    st.write('<h2>Login</h2>', unsafe_allow_html=True)
+    log_username = st.text_input("Username", key="log_username")
+    log_password = st.text_input("Password", type="password", key="log_password")
+    if st.button("Login"):
+        if login_user(log_username, log_password):
+            st.session_state.logged_in = True
+            st.session_state.username = log_username
+            user_info = get_user_info(log_username)
+            st.session_state.name = user_info['name'].capitalize()
+            st.session_state.surname = user_info['surname'].capitalize()
+            st.session_state.email = user_info['email']
+            st.success("Logged in successfully.")
+        else:
+            st.error("Invalid username or password.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # Render Registration Form
+    st.markdown('<div class="form-container">', unsafe_allow_html=True)
+    st.write('<h2>Register</h2>', unsafe_allow_html=True)
+    reg_username = st.text_input("Username", key="reg_username")
+    reg_password = st.text_input("Password", type="password", key="reg_password")
+    reg_name = st.text_input("Name", key="reg_name")
+    reg_surname = st.text_input("Surname", key="reg_surname")
+    reg_email = st.text_input("Email", key="reg_email")
+    if st.button("Register"):
+        if not user_exists(reg_username):
+            register_user(reg_username, reg_password, reg_name, reg_surname, reg_email)
+            st.success("User registered successfully.")
+        else:
+            st.error("Username already exists.")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Display the navbar
 st.markdown(nav_html, unsafe_allow_html=True)
