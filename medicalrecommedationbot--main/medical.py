@@ -114,74 +114,10 @@ nav_html = """
         padding-top: 80px; /* Adjust for the height of the navbar */
     }
 
-    /* Popup Sidebar Styles */
-    .popup-sidebar {
-        height: 100%;
-        width: 0;
-        position: fixed;
-        z-index: 1000;
-        top: 0;
-        left: 0;
-        background-color: green;
-        overflow-x: hidden;
-        transition: 0.5s;
-        padding-top: 60px;
-    }
 
-    .popup-sidebar a {
-        padding: 8px 8px 8px 32px;
-        text-decoration: none;
-        font-size: 25px;
-        color: white;
-        display: block;
-        transition: 0.3s;
-    }
-
-    .popup-sidebar a:hover {
-        background-color: darkgreen;
-    }
-
-    .popup-sidebar .closebtn {
-        position: absolute;
-        top: 0;
-        right: 25px;
-        font-size: 36px;
-        margin-left: 50px;
-    }
-
-    .open-btn {
-        font-size: 30px;
-        cursor: pointer;
-        background-color: green;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        position: absolute;
-        top: 10px;
-        left: 10px;
-    }
 </style>
 
-<button class="open-btn" onclick="openNav()">☰ Open Sidebar</button>
-<div id="myPopupSidebar" class="popup-sidebar">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-    <a href="#home">Home</a>
-    <a href="#about">About</a>
-    <a href="#farming">Farming</a>
-    <a href="#livestock">Livestock</a>
-    <a href="#vegetables">Vegetables</a>
-    <a href="#contact">Contact Us</a>
-</div>
 
-<script>
-    function openNav() {
-        document.getElementById("myPopupSidebar").style.width = "250px";
-    }
-
-    function closeNav() {
-        document.getElementById("myPopupSidebar").style.width = "0";
-    }
-</script>
 """
 
 # Streamlit CSS styling for login and sign-up forms
