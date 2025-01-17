@@ -248,7 +248,7 @@ if st.session_state.logged_in:
             st.success("Profile updated successfully.")
 
     # Chat Interface
-    st.title("Medical Assistant")
+    st.title("WELCOME TO OUR STUDENTBOT APP")
     for message in st.session_state.chat_history:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
