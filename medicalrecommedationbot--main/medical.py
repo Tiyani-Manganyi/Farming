@@ -247,35 +247,7 @@ if st.session_state.logged_in:
             st.session_state.email = new_email
             st.success("Profile updated successfully.")
 # Apply CSS to the container using a radical gradient
-import streamlit as st
 
-# Apply CSS to the container using a radical gradient
-st.markdown("""
-    <style>
-        body {
-            background: radial-gradient(circle, #ff7e5f, #feb47b); 
-            font-family: Arial, sans-serif;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-        }
-        .main-container {
-            text-align: center;
-            padding: 20px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-# Create a container for the title and chat messages
-with st.container():
-    st.markdown('<div class="main-container">', unsafe_allow_html=True)
-    
     # Title of the app inside the container
     st.title("WELCOME TO OUR STUDENTBOT APP")
 
