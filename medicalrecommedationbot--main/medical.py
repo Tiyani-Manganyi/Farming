@@ -247,6 +247,9 @@ if st.session_state.logged_in:
             st.session_state.email = new_email
             st.success("Profile updated successfully.")
 # Apply CSS to the container using a radical gradient
+import streamlit as st
+
+# Apply CSS to the container using a radical gradient
 st.markdown("""
     <style>
         body {
@@ -272,7 +275,18 @@ st.markdown("""
 # Create a container for the title and chat messages
 with st.container():
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
-   
+    
+    # Title of the app inside the container
+    st.title("WELCOME TO OUR STUDENTBOT APP")
+
+    # Displaying the chat messages
+    if "chat_history" in st.session_state:
+        for message in st.session_state.chat_history:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
     # Chat Interface
     st.title("WELCOME TO OUR STUDENTBOT APP")
     for message in st.session_state.chat_history:
