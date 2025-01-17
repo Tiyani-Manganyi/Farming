@@ -134,6 +134,7 @@ form_css = """
         background: white;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+         text-align: center;
     }
     .form-container h2 {
         text-align: center;
@@ -190,7 +191,7 @@ if 'bookmarked_messages' not in st.session_state:
 
 # Authentication
 if not st.session_state.logged_in:
-    st.sidebar.title("User Authentication")
+    st.sidebar.title("Welcome To Our StudentBot")
 
     # Registration
     with st.sidebar.expander("Register"):
@@ -245,13 +246,13 @@ if st.session_state.logged_in:
             st.success("Profile updated successfully.")
 
     # Chat Interface
-    st.title("Medical Assistant")
+    st.title("Student  Assistant App")
     for message in st.session_state.chat_history:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
     # Chat Input
-    if question := st.chat_input(placeholder="Ask a farming question"):
+    if question := st.chat_input(placeholder="Ask a student bot question"):
         st.session_state.chat_history.append({"role": "user", "content": question})
 
         # Display user's message
