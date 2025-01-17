@@ -95,11 +95,11 @@ nav_html = """
         background-color: #e8f5e9;
     }
     .navbar {
-        background-color: green;
+        background-color: red;
         position: fixed;
         top: 0;
         width: 100%;
-        heigth:20px;
+        heigth:20%;
         z-index: 1000;
         padding: 1rem;
         display: flex;
