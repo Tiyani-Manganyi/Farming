@@ -161,6 +161,7 @@ form_css = """
         background: darkgreen;
     }
 </style>
+
 """
 
 # Display CSS styling
