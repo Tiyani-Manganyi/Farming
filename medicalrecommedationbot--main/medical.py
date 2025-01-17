@@ -327,4 +327,3 @@ if st.session_state.logged_in:
         st.session_state.chat_history = []
         st.session_state.bookmarked_messages = []
         st.success("Logged out successfully.")
-
