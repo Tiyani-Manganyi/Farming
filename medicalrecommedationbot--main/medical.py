@@ -91,9 +91,16 @@ create_users_file()
 # Navbar HTML with a fixed top position and green background
 nav_html = """
 <style>
-    body {
-        background-color: #e8f5e9;
-    }
+   body {
+  background: radial-gradient(circle, #ff7e5f, #feb47b); /* You can adjust the colors as needed */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
     .navbar {
         background-color: red;
         position: fixed;
