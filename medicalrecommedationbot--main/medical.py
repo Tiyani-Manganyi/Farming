@@ -99,7 +99,7 @@ nav_html = """
         position: fixed;
         top: 0;
         width: 100%;
-        height:20%;
+        height:5%;
         z-index: 1000;
         padding: 1rem;
         display: flex;
