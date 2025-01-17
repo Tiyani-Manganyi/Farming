@@ -191,7 +191,7 @@ if 'bookmarked_messages' not in st.session_state:
 
 # Authentication
 if not st.session_state.logged_in:
-    st.sidebar.title("User Authentication")
+    st.sidebar.title("Welcome to our studentbot")
 
     # Registration
     with st.sidebar.expander("Register"):
