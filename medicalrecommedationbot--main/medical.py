@@ -24,6 +24,32 @@ def login_user(username, password):
                 return True
     return False
 
+def get_user_info(username):
+    with open(USERS_FILE, mode='r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if row[0] == username:
+                return {'name': row[2], 'surname': row[3], 'email': row[4]}
+    return None
+
+def update_user_info(username, new_name, new_surname, new_email, new_password):
+    updated = False
+    rows = []
+    with open(USERS_FILE, mode='r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if row[0] == username:
+                hashed_password = hash_password(new_password) if new_password else row[1]
+                rows.append([username, hashed_password, new_name, new_surname, new_email])
+                updated = True
+            else:
+                rows.append(row)
+
+    if updated:
+        with open(USERS_FILE, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(rows)
+
 def create_users_file():
     if not os.path.exists(USERS_FILE):
         with open(USERS_FILE, mode='w', newline='') as file:
@@ -87,10 +113,19 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Display forms
+# User session state
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
+if 'username' not in st.session_state:
+    st.session_state.username = None
+if 'name' not in st.session_state:
+    st.session_state.name = ''
+if 'surname' not in st.session_state:
+    st.session_state.surname = ''
+if 'email' not in st.session_state:
+    st.session_state.email = ''
 
+# Display forms
 if not st.session_state.logged_in:
     # Registration form
     with st.container():
@@ -115,9 +150,35 @@ if not st.session_state.logged_in:
         if st.button("Login"):
             if login_user(log_username, log_password):
                 st.session_state.logged_in = True
+                st.session_state.username = log_username
+                user_info = get_user_info(log_username)
+                st.session_state.name = user_info['name']
+                st.session_state.surname = user_info['surname']
+                st.session_state.email = user_info['email']
                 st.success("Logged in successfully!")
             else:
                 st.error("Invalid username or password.")
         st.markdown("</div>", unsafe_allow_html=True)
 else:
-    st.write("Welcome! You are logged in.")
+    # Profile and update form
+    st.markdown("<div class='form-container'>", unsafe_allow_html=True)
+    st.header("Update Profile")
+    new_name = st.text_input("New Name", value=st.session_state.name)
+    new_surname = st.text_input("New Surname", value=st.session_state.surname)
+    new_email = st.text_input("New Email", value=st.session_state.email)
+    new_password = st.text_input("New Password", type="password")
+    if st.button("Update Profile"):
+        update_user_info(st.session_state.username, new_name, new_surname, new_email, new_password)
+        st.session_state.name = new_name
+        st.session_state.surname = new_surname
+        st.session_state.email = new_email
+        st.success("Profile updated successfully!")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    if st.button("Logout"):
+        st.session_state.logged_in = False
+        st.session_state.username = None
+        st.session_state.name = ''
+        st.session_state.surname = ''
+        st.session_state.email = ''
+        st.success("Logged out successfully!")
