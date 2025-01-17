@@ -253,29 +253,3 @@ if st.session_state.logged_in:
         st.session_state.bookmarked_messages = []
         st.success("Logged out successfully.")
 
-else:
-    st.title("Welcome to Our Farming, Livestock, and Vegetables Website")
-
-# Main content sections
-st.markdown("""
-## Home
-Explore the best in farming, livestock, and vegetables!
-
-## About
-We are dedicated to providing fresh produce and quality livestock to our customers.
-
-## Farming
-Learn more about our farming practices and how we ensure sustainable and organic produce.
-
-## Livestock
-Our livestock are well taken care of, ensuring the highest quality meat and dairy products.
-
-## Vegetables
-We grow a variety of vegetables, using organic methods to keep them fresh and healthy.
-
-## Contact Us
-Feel free to reach out to us for any inquiries.
-""")
-
-# End the content padding div
-st.markdown('</div>', unsafe_allow_html=True)
