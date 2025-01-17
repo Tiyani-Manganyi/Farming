@@ -91,16 +91,14 @@ create_users_file()
 # Navbar HTML with a fixed top position and green background
 nav_html = """
 <style>
-   body {
-  background: red;
- 
-}
+    body {
+        background-color: #e8f5e9;
+    }
     .navbar {
-        background-color: red;
+        background-color: green;
         position: fixed;
         top: 0;
         width: 100%;
-        height:5%;
         z-index: 1000;
         padding: 1rem;
         display: flex;
@@ -162,7 +160,6 @@ form_css = """
         background: darkgreen;
     }
 </style>
-
 """
 
 # Display CSS styling
@@ -193,7 +190,7 @@ if 'bookmarked_messages' not in st.session_state:
 
 # Authentication
 if not st.session_state.logged_in:
-    st.sidebar.title("Welcome to our studentbot")
+    st.sidebar.title("User Authentication")
 
     # Registration
     with st.sidebar.expander("Register"):
@@ -246,21 +243,9 @@ if st.session_state.logged_in:
             st.session_state.surname = new_surname
             st.session_state.email = new_email
             st.success("Profile updated successfully.")
-# Apply CSS to the container using a radical gradient
-
-    # Title of the app inside the container
-    st.title("WELCOME TO OUR STUDENTBOT APP")
-
-    # Displaying the chat messages
-    if "chat_history" in st.session_state:
-        for message in st.session_state.chat_history:
-            with st.chat_message(message["role"]):
-                st.markdown(message["content"])
-
-    st.markdown('</div>', unsafe_allow_html=True)
 
     # Chat Interface
-    st.title("WELCOME TO OUR STUDENTBOT APP")
+    st.title("Medical Assistant")
     for message in st.session_state.chat_history:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
