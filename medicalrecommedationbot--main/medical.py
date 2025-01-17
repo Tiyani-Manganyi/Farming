@@ -92,14 +92,8 @@ create_users_file()
 nav_html = """
 <style>
    body {
-  background: radial-gradient(circle, #ff7e5f, #feb47b); /* You can adjust the colors as needed */
-  font-family: Arial, sans-serif;
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
+  background: red;
+ 
 }
     .navbar {
         background-color: red;
