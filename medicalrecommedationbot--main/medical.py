@@ -3,6 +3,7 @@ import os
 import hashlib
 import csv
 import time
+import bcrypt
 from groq import Groq
 
 # Define API key directly
@@ -14,8 +15,13 @@ client = Groq(api_key=GROQ_API_KEY)
 USERS_FILE = 'users.csv'
 
 def hash_password(password):
-    """Hash the password using SHA-256."""
-    return hashlib.sha256(password.encode()).hexdigest()
+    """Hash the password using bcrypt."""
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password.encode(), salt).decode()
+
+def check_password(stored_password, provided_password):
+    """Check if the provided password matches the stored hashed password."""
+    return bcrypt.checkpw(provided_password.encode(), stored_password.encode())
 
 def register_user(username, password, name, surname, email):
     """Register a new user by appending their details to the CSV file."""
@@ -26,11 +32,10 @@ def register_user(username, password, name, surname, email):
 
 def login_user(username, password):
     """Authenticate a user by checking username and password."""
-    hashed_password = hash_password(password)
     with open(USERS_FILE, mode='r') as file:
         reader = csv.reader(file)
         for row in reader:
-            if row[0] == username and row[1] == hashed_password:
+            if row[0] == username and check_password(row[1], password):
                 return True
     return False
 
@@ -113,111 +118,11 @@ nav_html = """
     .content {
         padding-top: 80px; /* Adjust for the height of the navbar */
     }
-
-
-</style>
-
-
-"""
-
-# Streamlit CSS styling for login and sign-up forms
-
-"""
-css = """
-<style>
-    /* Overall container for forms */
-    .form-container {
-        background-color: #f4f4f4;
-        padding: 2rem;
-        border-radius: 8px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 1.5rem;
-    }
-
-    /* Input fields */
-    input[type="text"], input[type="password"], input[type="email"] {
-        width: 100%;
-        padding: 12px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
-        box-sizing: border-box;
-    }
-
-    /* Buttons */
-    .form-btn {
-        background-color: #4CAF50;
-        color: white;
-        padding: 12px;
-        font-size: 16px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        width: 100%;
-    }
-
-    .form-btn:hover {
-        background-color: #45a049;
-    }
-
-    /* Titles and labels */
-    h3 {
-        color: #333;
-        margin-bottom: 10px;
-    }
-
-    /* Sidebar Styling */
-    .sidebar .sidebar-content {
-        padding: 1rem;
-    }
-    
-    /* Success and Error Messages */
-    .st-success, .st-error {
-        background-color: #d4edda;
-        color: #155724;
-        padding: 1rem;
-        border-radius: 5px;
-        font-size: 16px;
-        margin-top: 10px;
-    }
-
-    .st-error {
-        background-color: #f8d7da;
-        color: #721c24;
-    }
-
 </style>
 """
 
 # Inject CSS into Streamlit app
-st.markdown(css, unsafe_allow_html=True)
-
-st.markdown(
-    """
-    <style>
-    .cover-glow {
-        width: 100%;
-        height: auto;
-        padding: 3px;
-        box-shadow: 
-            0 0 5px #330000,
-            0 0 10px #660000,
-            0 0 15px #990000,
-            0 0 20px #CC0000,
-            0 0 25px #FF0000,
-            0 0 30px #FF3333,
-            0 0 35px #FF6666;
-        position: relative;
-        z-index: -1;
-        border-radius: 45px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-# Display CSS styling
-st.markdown(form_css, unsafe_allow_html=True)
+st.markdown(nav_html, unsafe_allow_html=True)
 
 # Display the navbar
 st.markdown(nav_html, unsafe_allow_html=True)
