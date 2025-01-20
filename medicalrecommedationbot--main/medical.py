@@ -3,11 +3,10 @@ import os
 import hashlib
 import csv
 import time
-import bcrypt
 from groq import Groq
 
 # Define API key directly
-GROQ_API_KEY = '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'
+GROQ_API_KEY = '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'
 
 # Initialize Groq client
 client = Groq(api_key=GROQ_API_KEY)
@@ -15,13 +14,8 @@ client = Groq(api_key=GROQ_API_KEY)
 USERS_FILE = 'users.csv'
 
 def hash_password(password):
-    """Hash the password using bcrypt."""
-    salt = bcrypt.gensalt()
-    return bcrypt.hashpw(password.encode(), salt).decode()
-
-def check_password(stored_password, provided_password):
-    """Check if the provided password matches the stored hashed password."""
-    return bcrypt.checkpw(provided_password.encode(), stored_password.encode())
+    """Hash the password using SHA-256."""
+    return hashlib.sha256(password.encode()).hexdigest()
 
 def register_user(username, password, name, surname, email):
     """Register a new user by appending their details to the CSV file."""
@@ -32,10 +26,11 @@ def register_user(username, password, name, surname, email):
 
 def login_user(username, password):
     """Authenticate a user by checking username and password."""
+    hashed_password = hash_password(password)
     with open(USERS_FILE, mode='r') as file:
         reader = csv.reader(file)
         for row in reader:
-            if row[0] == username and check_password(row[1], password):
+            if row[0] == username and row[1] == hashed_password:
                 return True
     return False
 
@@ -88,47 +83,10 @@ def create_users_file():
             writer.writerow(['username', 'password', 'name', 'surname', 'email'])
 
 # Set page configuration
-st.set_page_config(page_title="Farming Website", page_icon="🌾")
+st.set_page_config(page_title="Medical Assistant", page_icon="medical.png")
 
 # Create users file if it doesn't exist
 create_users_file()
-
-# Navbar HTML with a fixed top position and green background
-nav_html = """
-<style>
-    body {
-        background-color: #e8f5e9;
-    }
-    .navbar {
-        background-color: green;
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
-        padding: 1rem;
-        display: flex;
-        justify-content: space-around;
-    }
-    .navbar a {
-        color: white;
-        text-decoration: none;
-        font-size: 20px;
-        font-weight: bold;
-    }
-    .content {
-        padding-top: 80px; /* Adjust for the height of the navbar */
-    }
-</style>
-"""
-
-# Inject CSS into Streamlit app
-st.markdown(nav_html, unsafe_allow_html=True)
-
-# Display the navbar
-st.markdown(nav_html, unsafe_allow_html=True)
-
-# Padding for content to avoid being hidden behind the navbar
-st.markdown('<div class="content">', unsafe_allow_html=True)
 
 # User session state to track login status and user info
 if 'logged_in' not in st.session_state:
@@ -148,7 +106,11 @@ if 'bookmarked_messages' not in st.session_state:
 
 # Authentication
 if not st.session_state.logged_in:
-    st.sidebar.title("Welcome To Our StudentBot")
+import streamlit as st
+
+# Using HTML to set the title color to red
+st.sidebar.markdown("<h1 style='color:red;'>Welcome To Our Student Bot App</h1>", unsafe_allow_html=True)
+
 
     # Registration
     with st.sidebar.expander("Register"):
@@ -203,13 +165,13 @@ if st.session_state.logged_in:
             st.success("Profile updated successfully.")
 
     # Chat Interface
-    st.title("Student  Assistant App")
+    st.title("Medical Assistant")
     for message in st.session_state.chat_history:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
     # Chat Input
-    if question := st.chat_input(placeholder="Ask a student bot question"):
+    if question := st.chat_input(placeholder="Ask a medical question"):
         st.session_state.chat_history.append({"role": "user", "content": question})
 
         # Display user's message
@@ -219,7 +181,7 @@ if st.session_state.logged_in:
         # Create chat completion request
         start = time.process_time()
         chat_completion = client.chat.completions.create(
-            messages=[{"role": "system", "content": "WELCOME TO OUR SYSTEM"}] + st.session_state.chat_history,
+            messages=[{"role": "system", "content": "You are a medical assistant. You can only answer questions related to diseases, their causes, drugs, and recommendations."}] + st.session_state.chat_history,
             model="llama3-8b-8192",
             temperature=0.5,
             max_tokens=1024,
@@ -239,7 +201,7 @@ if st.session_state.logged_in:
             with st.chat_message("assistant"):
                 st.markdown(answer)
         else:
-            st.write("The response does not match the items criteria.")
+            st.write("The response does not match the medical criteria.")
 
     # Logout
     if st.sidebar.button("Logout"):
@@ -251,3 +213,9 @@ if st.session_state.logged_in:
         st.session_state.chat_history = []
         st.session_state.bookmarked_messages = []
         st.success("Logged out successfully.")
+
+else:
+    st.title("Welcome to the StudentBot Assistant ")
+    st.write("Please log in to interact with the chatbot.")
+    st.image("medical.png", use_column_width=True)
+    st.write("The mission of this app is to provide users with a secure and personalized experience to access advanced AI-driven assistance for medical inquiries.")
