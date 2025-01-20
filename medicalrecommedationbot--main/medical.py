@@ -123,6 +123,75 @@ nav_html = """
 # Streamlit CSS styling for login and sign-up forms
 
 """
+css = """
+<style>
+    /* Overall container for forms */
+    .form-container {
+        background-color: #f4f4f4;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1.5rem;
+    }
+
+    /* Input fields */
+    input[type="text"], input[type="password"], input[type="email"] {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+
+    /* Buttons */
+    .form-btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .form-btn:hover {
+        background-color: #45a049;
+    }
+
+    /* Titles and labels */
+    h3 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    /* Sidebar Styling */
+    .sidebar .sidebar-content {
+        padding: 1rem;
+    }
+    
+    /* Success and Error Messages */
+    .st-success, .st-error {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 1rem;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    .st-error {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+</style>
+"""
+
+# Inject CSS into Streamlit app
+st.markdown(css, unsafe_allow_html=True)
 
 st.markdown(
     """
