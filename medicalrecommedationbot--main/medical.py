@@ -127,7 +127,7 @@ form_css = """
         max-width: 400px;
         margin: 50px auto;
         padding: 20px;
-        background: white;
+        background: red;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
          text-align: center;
