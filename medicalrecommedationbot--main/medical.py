@@ -124,13 +124,17 @@ nav_html = """
 form_css = """
 <style>
     .form-container {
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        transform: translate(50%, -50%);
         max-width: 400px;
-        margin: 50px auto;
         padding: 20px;
-        background: red;
+        background: #ffffff;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-         text-align: center;
+        text-align: center;
+        border: 2px solid green;
     }
     .form-container h2 {
         text-align: center;
@@ -156,8 +160,12 @@ form_css = """
     .form-container button:hover {
         background: darkgreen;
     }
+    body {
+        background-color: #e8f5e9;
+    }
 </style>
 """
+
 st.markdown(
     """
     <style>
