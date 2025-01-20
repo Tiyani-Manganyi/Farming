@@ -121,49 +121,7 @@ nav_html = """
 """
 
 # Streamlit CSS styling for login and sign-up forms
-form_css = """
-<style>
-    .form-container {
-        position: absolute;
-        top: 50%;
-        right: 50%;
-        transform: translate(50%, -50%);
-        max-width: 400px;
-        padding: 20px;
-        background: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        border: 2px solid green;
-    }
-    .form-container h2 {
-        text-align: center;
-        margin-bottom: 20px;
-        color: green;
-    }
-    .form-container input[type="text"],
-    .form-container input[type="password"],
-    .form-container input[type="email"],
-    .form-container button {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-    .form-container button {
-        background: green;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
-    .form-container button:hover {
-        background: darkgreen;
-    }
-    body {
-        background-color: #e8f5e9;
-    }
-</style>
+
 """
 
 st.markdown(
